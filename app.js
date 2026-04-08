@@ -152,8 +152,8 @@ function mapVideoChunks(filenames) {
         return {
             startTime,
             endTime: startTime + VIDEO_CHUNK_DURATION_MS,
-            camA: DATA_PATHS.camA + fname,
-            camB: DATA_PATHS.camB + fname
+            camA: DATA_PATHS.camA + encodeURIComponent(fname),
+            camB: DATA_PATHS.camB + encodeURIComponent(fname)
         };
     }).sort((a, b) => a.startTime - b.startTime);
 }
