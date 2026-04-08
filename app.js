@@ -71,6 +71,8 @@ async function init() {
 
         // 2. Set Initial Time
         state.currentTime = state.chunks[0]?.startTime || state.telemetry[0]?.timestamp || Date.now();
+        console.log('Initial time set to:', new Date(state.currentTime).toISOString());
+        console.log('First chunk:', state.chunks[0]);
 
         // 3. Render Initial UI
         renderEvents();
@@ -242,13 +244,15 @@ function syncVideos(forceSeek = false) {
                 return;
             }
             const url = idx === 0 ? chunk.camA : chunk.camB;
-            console.log(`Setting video ${idx === 0 ? 'A' : 'B'} src:`, url);
 
             if (sourceChanged) {
+                console.log(`Loading video ${idx === 0 ? 'A' : 'B'}:`, url);
                 vid.src = url;
+                vid.onerror = (e) => console.error(`Video ${idx === 0 ? 'A' : 'B'} error:`, e);
                 vid.onloadedmetadata = () => {
+                    console.log(`Video ${idx === 0 ? 'A' : 'B'} loaded, seeking to ${offset}s`);
                     vid.currentTime = offset;
-                    if (state.isPlaying) vid.play().catch(() => { });
+                    if (state.isPlaying) vid.play().catch(err => console.error('Play error:', err));
                 };
             }
 
