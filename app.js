@@ -256,13 +256,16 @@ function syncVideos(forceSeek = false) {
                 };
             }
 
-            const drift = Math.abs(vid.currentTime - offset);
-            if (forceSeek || drift > 0.25) {
-                vid.currentTime = offset;
-            }
+            // Only seek/play if video has enough data loaded (readyState >= 2)
+            if (vid.readyState >= 2) {
+                const drift = Math.abs(vid.currentTime - offset);
+                if (forceSeek || drift > 0.25) {
+                    vid.currentTime = offset;
+                }
 
-            if (state.isPlaying && vid.paused) vid.play().catch(() => { });
-            if (!state.isPlaying && !vid.paused) vid.pause();
+                if (state.isPlaying && vid.paused) vid.play().catch(() => { });
+                if (!state.isPlaying && !vid.paused) vid.pause();
+            }
         });
     } else {
         if (state.activeChunk) {
