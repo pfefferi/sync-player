@@ -46,6 +46,7 @@ const elements = {
     valSal: document.getElementById('val-sal')
 };
 
+console.log('DOM Elements loaded:', { videoA: !!elements.videoA, videoB: !!elements.videoB });
 // --- CHART INSTANCE ---
 let telemetryChart = null;
 
@@ -236,8 +237,12 @@ function syncVideos(forceSeek = false) {
         }
 
         [elements.videoA, elements.videoB].forEach((vid, idx) => {
-            if (!vid) return;
+            if (!vid) {
+                console.warn(`Video element ${idx === 0 ? 'A' : 'B'} not found!`);
+                return;
+            }
             const url = idx === 0 ? chunk.camA : chunk.camB;
+            console.log(`Setting video ${idx === 0 ? 'A' : 'B'} src:`, url);
 
             if (sourceChanged) {
                 vid.src = url;
