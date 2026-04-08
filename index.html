@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control Dashboard | Dive S0883</title>
+
+    <!-- Dependencies via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Main Dashboard Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="brand">
+                    <i data-lucide="activity" class="brand-icon"></i>
+                    <div class="brand-text">
+                        <h1>Mission Control</h1>
+                        <span class="subtitle">MISSION: S0883 | VEHICLE: ROV FALKOR</span>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-info text-right">
+                        <span class="label">SYSTEM STATUS</span>
+                        <span class="value">OPERATIONAL</span>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+            </header>
+
+            <!-- Video Section -->
+            <section class="video-section card">
+                <div class="video-controls">
+                    <div class="view-toggles">
+                        <button class="btn active" data-view="split">SPLIT VIEW</button>
+                        <button class="btn" data-view="camA">CAM A [4K]</button>
+                        <button class="btn" data-view="camB">CAM B [1080]</button>
+                    </div>
+                    <div class="mission-clock">
+                        <i data-lucide="clock" size="16"></i>
+                        <span id="current-time-display">2025-12-21 08:30:53 UTC</span>
+                    </div>
+                </div>
+
+                <div id="video-canvas" class="video-canvas split">
+                    <div class="video-wrapper" id="wrapper-camA">
+                        <video id="video-camA" muted playsinline></video>
+                        <div class="video-label">CAM A - 4K</div>
+                    </div>
+                    <div class="video-wrapper" id="wrapper-camB">
+                        <video id="video-camB" muted playsinline></video>
+                        <div class="video-label">CAM B - 1080P</div>
+                    </div>
+                </div>
+
+                <!-- Playback Overlay -->
+                <div class="playback-overlay">
+                    <button id="btn-toggle-play" class="playback-btn">
+                        <i data-lucide="play" id="play-icon"></i>
+                        <i data-lucide="pause" id="pause-icon" style="display: none;"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Telemetry Bar -->
+            <section class="telemetry-bar card">
+                <div class="stat">
+                    <span class="stat-label">DEPTH</span>
+                    <span class="stat-value" id="val-depth">0.0</span>
+                    <span class="stat-unit">m</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">TEMP</span>
+                    <span class="stat-value" id="val-temp">0.0</span>
+                    <span class="stat-unit">°C</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">SALINITY</span>
+                    <span class="stat-value" id="val-sal">0.0</span>
+                    <span class="stat-unit">PSU</span>
+                </div>
+            </section>
+
+            <!-- Timeline Section -->
+            <section class="timeline-section card">
+                <div class="section-header">
+                    <h3>Telemetry Timeline</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="telemetryChart"></canvas>
+                </div>
+                <div class="chart-footer">
+                    <i data-lucide="info" size="12"></i>
+                    <span>CLICK CHART OR DRAG TO SEEK MISSION TIME</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Mission Log Content</h3>
+                <span class="badge" id="event-count">0 EVENTS</span>
+            </div>
+            <div id="event-list" class="event-list custom-scrollbar">
+                <!-- Events will be injected here -->
+                <div class="loader">SYNCING MISSION DATA...</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Application Logic -->
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

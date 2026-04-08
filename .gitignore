@@ -1,0 +1,12 @@
+# Data files (too large / user-specific)
+data/sealog.csv
+data/camA/
+data/camB/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
